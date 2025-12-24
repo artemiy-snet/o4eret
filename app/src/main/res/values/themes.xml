@@ -1,0 +1,9 @@
+<resources>
+    <style name="Theme.O4eret" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <item name="colorPrimary">@color/color_primary</item>
+        <item name="colorPrimaryVariant">@color/color_primary_variant</item>
+        <item name="colorSecondary">@color/color_secondary</item>
+        <item name="android:statusBarColor">@color/color_primary_variant</item>
+        <item name="android:navigationBarColor">@color/color_background</item>
+    </style>
+</resources>
