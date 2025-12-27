@@ -6,4 +6,6 @@
     <color name="color_surface">#1E1E1E</color>
     <color name="color_on_primary">#FFFFFF</color>
     <color name="color_on_secondary">#000000</color>
+    <color name="color_on_background">#FFFFFF</color>
+    <color name="color_on_surface">#E0E0E0</color>
 </resources>
