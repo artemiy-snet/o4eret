@@ -8,4 +8,8 @@
     <color name="color_on_secondary">#000000</color>
     <color name="color_on_background">#FFFFFF</color>
     <color name="color_on_surface">#E0E0E0</color>
+    <color name="o4_bg">#0B0F0B</color>
+    <color name="o4_green">#49E849</color>
+    <color name="o4_green_bright">#6CFF6C</color>
+    <color name="o4_surface">#111811</color>
 </resources>
