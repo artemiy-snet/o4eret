@@ -28,6 +28,15 @@
         android:textColor="@color/color_on_surface"
         android:textSize="16sp" />
 
+    <TextView
+        android:id="@+id/node_status_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        android:text="Node: STOPPED"
+        android:textColor="@color/color_on_surface"
+        android:textSize="14sp" />
+
     <com.google.android.material.button.MaterialButton
         android:id="@+id/start_node_button"
         style="@style/Widget.MaterialComponents.Button"
@@ -40,5 +49,20 @@
         android:textColor="@color/color_on_primary"
         app:cornerRadius="12dp"
         app:backgroundTint="@color/color_primary" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/stop_node_button"
+        style="@style/Widget.MaterialComponents.Button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:paddingStart="18dp"
+        android:paddingEnd="18dp"
+        android:enabled="false"
+        android:text="Stop"
+        android:textAllCaps="false"
+        android:textColor="@color/color_on_secondary"
+        app:cornerRadius="10dp"
+        app:backgroundTint="@color/color_secondary" />
 
 </LinearLayout>
