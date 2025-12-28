@@ -1,55 +1,92 @@
 package com.example.o4eret.ui
 
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
 import android.view.View
 import android.widget.TextView
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
 import com.example.o4eret.R
+import com.example.o4eret.ui.terminal.TerminalUi
+import com.google.android.material.button.MaterialButton
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 class InfoFragment : Fragment(R.layout.fragment_info) {
 
-    private val handler = Handler(Looper.getMainLooper())
-    private var liveText: TextView? = null
-    private var seconds = 0
+    private lateinit var titleText: TextView
+    private lateinit var panelText: TextView
+    private lateinit var statusText: TextView
+    private lateinit var actionButton: MaterialButton
 
-    private val liveRunnable = object : Runnable {
-        override fun run() {
-            liveText?.text = "LIVE: Info t=${seconds}s"
-            seconds++
-            handler.postDelayed(this, 1000)
+    private var statusLine = READY
+    private var actionLine = ACTION_READY
+    private var stateJob: Job? = null
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        savedInstanceState?.let {
+            statusLine = it.getString(KEY_STATUS, statusLine) ?: statusLine
+            actionLine = it.getString(KEY_ACTION, actionLine) ?: actionLine
         }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val titleText = view.findViewById<TextView>(R.id.titleText)
-        val bodyText = view.findViewById<TextView>(R.id.bodyText)
-        liveText = view.findViewById(R.id.liveText)
+        titleText = view.findViewById(R.id.terminalTitle)
+        panelText = view.findViewById(R.id.terminalPanel)
+        statusText = view.findViewById(R.id.terminalStatus)
+        actionButton = view.findViewById(R.id.terminalButton)
 
-        titleText.text = "Diagnostic Info"
-        bodyText.text = """
-            +-----------------------------+
-            | o4eret :: INFO              |
-            |                             |
-            | Status: READY               |
-            | Build                       |
-            | device                      |
-            | diagnostics                 |
-            +-----------------------------+
-        """.trimIndent()
+        titleText.text = "Info"
+        actionButton.text = ACTION_READY
+
+        TerminalUi.setTerminalText(panelText)
+        TerminalUi.setTerminalText(statusText)
+        renderPanel()
+
+        actionButton.setOnClickListener { handleAction() }
     }
 
-    override fun onResume() {
-        super.onResume()
-        seconds = 0
-        liveText?.text = "LIVE: Info t=${seconds}s"
-        handler.post(liveRunnable)
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        outState.putString(KEY_STATUS, statusLine)
+        outState.putString(KEY_ACTION, actionLine)
     }
 
-    override fun onPause() {
-        super.onPause()
-        handler.removeCallbacks(liveRunnable)
+    private fun renderPanel() {
+        val lines = listOf(
+            "status: $statusLine",
+            "action: $actionLine",
+            "build: debug shell",
+            "device: emulator",
+            "diagnostics: inline"
+        )
+        panelText.text = TerminalUi.asciiBox("INFO", lines, width = 28)
+        statusText.text = "status: $statusLine"
+    }
+
+    private fun handleAction() {
+        stateJob?.cancel()
+        statusLine = WORKING
+        actionLine = ACTION_WORKING
+        renderPanel()
+
+        stateJob = viewLifecycleOwner.lifecycleScope.launch {
+            delay(700)
+            statusLine = READY
+            actionLine = ACTION_DONE
+            renderPanel()
+        }
+    }
+
+    companion object {
+        private const val KEY_STATUS = "info_status"
+        private const val KEY_ACTION = "info_action"
+        private const val READY = "READY"
+        private const val WORKING = "WORKING"
+        private const val ACTION_READY = "DETAILS"
+        private const val ACTION_WORKING = "FETCHING"
+        private const val ACTION_DONE = "READY"
     }
 }
