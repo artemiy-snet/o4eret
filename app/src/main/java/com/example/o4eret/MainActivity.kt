@@ -27,28 +27,19 @@ class MainActivity : AppCompatActivity() {
     }
 
     private val navListener = NavigationBarView.OnItemSelectedListener { item ->
-        val selected = item.itemId
-        switchFragment(selected)
+        switchFragment(item.itemId)
     }
 
     private fun switchFragment(itemId: Int): Boolean {
-        val tag = tagForItem(itemId) ?: return false
+        val tag = tabTags[itemId] ?: return false
         val fragmentManager = supportFragmentManager
-        val transaction = fragmentManager.beginTransaction()
+        val fragment = fragmentManager.findFragmentByTag(tag) ?: createFragmentForItem(itemId)
 
-        fragmentManager.fragments.forEach { fragment ->
-            transaction.hide(fragment)
-        }
+        fragmentManager.beginTransaction()
+            .setReorderingAllowed(true)
+            .replace(R.id.fragmentContainer, fragment, tag)
+            .commit()
 
-        var fragment = fragmentManager.findFragmentByTag(tag)
-        if (fragment == null) {
-            fragment = createFragmentForItem(itemId)
-            transaction.add(R.id.fragment_container, fragment, tag)
-        } else {
-            transaction.show(fragment)
-        }
-
-        transaction.commit()
         return true
     }
 
@@ -62,29 +53,20 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun tagForItem(itemId: Int): String? {
-        return when (itemId) {
-            R.id.nav_network -> TAG_NETWORK
-            R.id.nav_browser -> TAG_BROWSER
-            R.id.nav_acoustic -> TAG_ACOUSTIC
-            R.id.nav_chat -> TAG_CHAT
-            R.id.nav_info -> TAG_INFO
-            else -> null
-        }
-    }
-
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
         outState.putInt(KEY_SELECTED_TAB, b.bottomNav.selectedItemId)
     }
 
-    override fun onResume() {
-        super.onResume()
-        switchFragment(b.bottomNav.selectedItemId)
-    }
-
     companion object {
         private const val KEY_SELECTED_TAB = "selected_tab"
+        private val tabTags = mapOf(
+            R.id.nav_network to TAG_NETWORK,
+            R.id.nav_browser to TAG_BROWSER,
+            R.id.nav_acoustic to TAG_ACOUSTIC,
+            R.id.nav_chat to TAG_CHAT,
+            R.id.nav_info to TAG_INFO
+        )
         private const val TAG_NETWORK = "tab_network"
         private const val TAG_BROWSER = "tab_browser"
         private const val TAG_ACOUSTIC = "tab_acoustic"
