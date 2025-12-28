@@ -1,44 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/o4_bg">
+    android:background="#050A05"
+    android:gravity="center"
+    android:orientation="vertical"
+    android:padding="24dp">
 
-    <LinearLayout
-        android:layout_width="match_parent"
+    <TextView
+        android:id="@+id/tvBox"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:gravity="center_horizontal"
-        android:orientation="vertical"
-        android:padding="24dp">
+        android:fontFamily="monospace"
+        android:textColor="#00FF66"
+        android:textSize="14sp"
+        android:lineSpacingExtra="2dp"
+        android:text="+----------------------------+&#10;|          BROWSER           |&#10;|  status: READY             |&#10;|  action: OPEN              |&#10;+----------------------------+" />
 
-        <TextView
-            android:id="@+id/titleText"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:fontFamily="monospace"
-            android:textColor="#6CFF6C"
-            android:textSize="24sp"
-            android:textStyle="bold" />
-
-        <TextView
-            android:id="@+id/bodyText"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="12dp"
-            android:fontFamily="monospace"
-            android:textColor="@color/o4_green"
-            android:textSize="14sp" />
-
-        <TextView
-            android:id="@+id/liveText"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:fontFamily="monospace"
-            android:textColor="@color/o4_green_bright"
-            android:textSize="12sp" />
-
-    </LinearLayout>
-
-</FrameLayout>
+    <Button
+        android:id="@+id/btnAction"
+        android:layout_width="220dp"
+        android:layout_height="48dp"
+        android:layout_marginTop="18dp"
+        android:text="OPEN"
+        android:textAllCaps="true" />
+</LinearLayout>
