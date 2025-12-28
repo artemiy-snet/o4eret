@@ -2,20 +2,34 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#000000"
-    android:padding="24dp">
+    android:background="#0B0F0B">
 
-    <TextView
-        android:id="@+id/network_ascii_header"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:background="#000000"
-        android:fontFamily="monospace"
-        android:gravity="center"
-        android:padding="16dp"
-        android:text="+----------------------+\n|      NETWORK         |\n|   status: READY      |\n+----------------------+"
-        android:textColor="#00FF00"
-        android:textSize="18sp" />
+        android:gravity="center_horizontal"
+        android:orientation="vertical"
+        android:padding="24dp">
+
+        <TextView
+            android:id="@+id/titleText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="monospace"
+            android:textColor="#6CFF6C"
+            android:textSize="24sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/bodyText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:fontFamily="monospace"
+            android:textColor="#49E849"
+            android:textSize="14sp" />
+
+    </LinearLayout>
 
 </FrameLayout>
