@@ -1,48 +1,90 @@
 package com.example.o4eret.ui
 
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
-import android.widget.Button
 import android.widget.TextView
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
 import com.example.o4eret.R
+import com.example.o4eret.ui.terminal.TerminalUi
+import com.google.android.material.button.MaterialButton
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
-class BrowserFragment : Fragment() {
+class BrowserFragment : Fragment(R.layout.fragment_browser) {
 
-    private var running = false
+    private lateinit var titleText: TextView
+    private lateinit var panelText: TextView
+    private lateinit var statusText: TextView
+    private lateinit var actionButton: MaterialButton
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        val v = inflater.inflate(R.layout.fragment_browser, container, false)
+    private var statusLine = READY
+    private var actionLine = ACTION_READY
+    private var stateJob: Job? = null
 
-        val tvBox = v.findViewById<TextView>(R.id.tvBox)
-        val btn = v.findViewById<Button>(R.id.btnAction)
-
-        fun render() {
-            val status = if (running) "RUNNING" else "READY"
-            val action = if (running) "STOP" else "OPEN"
-
-            // ASCII-рамка “старого інтернету”
-            val line = "+----------------------------+"
-            val title = "|          BROWSER           |"
-            val st = String.format("|  status: %-17s|", status)
-            val act = String.format("|  action: %-17s|", action)
-
-            tvBox.text = listOf(line, title, st, act, line).joinToString("\n")
-            btn.text = action
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        savedInstanceState?.let {
+            statusLine = it.getString(KEY_STATUS, statusLine) ?: statusLine
+            actionLine = it.getString(KEY_ACTION, actionLine) ?: actionLine
         }
+    }
 
-        btn.setOnClickListener {
-            running = !running
-            render()
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        titleText = view.findViewById(R.id.terminalTitle)
+        panelText = view.findViewById(R.id.terminalPanel)
+        statusText = view.findViewById(R.id.terminalStatus)
+        actionButton = view.findViewById(R.id.terminalButton)
+
+        titleText.text = "Browser"
+        actionButton.text = ACTION_READY
+
+        TerminalUi.setTerminalText(panelText)
+        TerminalUi.setTerminalText(statusText)
+        renderPanel()
+
+        actionButton.setOnClickListener { handleAction() }
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        outState.putString(KEY_STATUS, statusLine)
+        outState.putString(KEY_ACTION, actionLine)
+    }
+
+    private fun renderPanel() {
+        val lines = listOf(
+            "status: $statusLine",
+            "action: $actionLine",
+            "target: http://o4eret",
+            "mode: text-only"
+        )
+        panelText.text = TerminalUi.asciiBox("BROWSER", lines, width = 28)
+        statusText.text = "status: $statusLine"
+    }
+
+    private fun handleAction() {
+        stateJob?.cancel()
+        statusLine = WORKING
+        actionLine = ACTION_WORKING
+        renderPanel()
+        stateJob = viewLifecycleOwner.lifecycleScope.launch {
+            delay(700)
+            statusLine = READY
+            actionLine = ACTION_DONE
+            renderPanel()
         }
+    }
 
-        render()
-        return v
+    companion object {
+        private const val KEY_STATUS = "browser_status"
+        private const val KEY_ACTION = "browser_action"
+        private const val READY = "READY"
+        private const val WORKING = "WORKING"
+        private const val ACTION_READY = "OPEN"
+        private const val ACTION_WORKING = "OPENING"
+        private const val ACTION_DONE = "DONE"
     }
 }
