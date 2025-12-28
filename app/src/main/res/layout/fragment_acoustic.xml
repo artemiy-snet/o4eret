@@ -2,7 +2,7 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#0B0F0B">
+    android:background="@color/o4_bg">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -27,8 +27,17 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="12dp"
             android:fontFamily="monospace"
-            android:textColor="#49E849"
+            android:textColor="@color/o4_green"
             android:textSize="14sp" />
+
+        <TextView
+            android:id="@+id/liveText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:fontFamily="monospace"
+            android:textColor="@color/o4_green_bright"
+            android:textSize="12sp" />
 
     </LinearLayout>
 

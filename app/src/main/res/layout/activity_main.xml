@@ -4,7 +4,10 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/root"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/o4_bg"
+    android:fitsSystemWindows="true"
+    android:paddingBottom="16dp">
 
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/fragmentContainer"
@@ -20,9 +23,11 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
-        android:background="@color/color_surface"
-        app:itemIconTint="@color/color_on_surface"
-        app:itemTextColor="@color/color_on_surface"
+        android:background="@color/o4_surface"
+        android:paddingTop="8dp"
+        android:paddingBottom="8dp"
+        app:itemIconTint="@color/o4_green_bright"
+        app:itemTextColor="@color/o4_green_bright"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
