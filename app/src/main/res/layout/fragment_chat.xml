@@ -2,16 +2,20 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/color_surface"
+    android:background="#000000"
     android:padding="24dp">
 
     <TextView
-        android:id="@+id/chat_title"
+        android:id="@+id/chat_ascii_header"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/nav_chat"
-        android:textColor="@color/color_on_background"
-        android:textSize="28sp"
-        android:textStyle="bold" />
+        android:layout_gravity="center"
+        android:background="#000000"
+        android:fontFamily="monospace"
+        android:gravity="center"
+        android:padding="16dp"
+        android:text="+----------------------+\n|       CHAT           |\n|   status: READY      |\n+----------------------+"
+        android:textColor="#00FF00"
+        android:textSize="18sp" />
 
 </FrameLayout>
