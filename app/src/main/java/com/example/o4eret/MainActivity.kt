@@ -3,22 +3,30 @@ package com.example.o4eret
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
 import com.example.o4eret.databinding.ActivityMainBinding
+import com.example.o4eret.core.AppStore
 import com.example.o4eret.ui.AcousticFragment
 import com.example.o4eret.ui.BrowserFragment
 import com.example.o4eret.ui.ChatFragment
 import com.example.o4eret.ui.InfoFragment
 import com.example.o4eret.ui.NetworkFragment
 import com.google.android.material.navigation.NavigationBarView
+import kotlinx.coroutines.launch
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var b: ActivityMainBinding
+    private val appStore by lazy { AppStore(this) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         b = ActivityMainBinding.inflate(layoutInflater)
         setContentView(b.root)
+
+        lifecycleScope.launch {
+            appStore.ensureNodeId()
+        }
 
         b.bottomNav.setOnItemSelectedListener(navListener)
 
