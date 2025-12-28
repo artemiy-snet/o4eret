@@ -1,55 +1,48 @@
 package com.example.o4eret.ui
 
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
+import android.widget.Button
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import com.example.o4eret.R
 
-class BrowserFragment : Fragment(R.layout.fragment_browser) {
+class BrowserFragment : Fragment() {
 
-    private val handler = Handler(Looper.getMainLooper())
-    private var liveText: TextView? = null
-    private var seconds = 0
+    private var running = false
 
-    private val liveRunnable = object : Runnable {
-        override fun run() {
-            liveText?.text = "LIVE: Browser t=${seconds}s"
-            seconds++
-            handler.postDelayed(this, 1000)
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        val v = inflater.inflate(R.layout.fragment_browser, container, false)
+
+        val tvBox = v.findViewById<TextView>(R.id.tvBox)
+        val btn = v.findViewById<Button>(R.id.btnAction)
+
+        fun render() {
+            val status = if (running) "RUNNING" else "READY"
+            val action = if (running) "STOP" else "OPEN"
+
+            // ASCII-рамка “старого інтернету”
+            val line = "+----------------------------+"
+            val title = "|          BROWSER           |"
+            val st = String.format("|  status: %-17s|", status)
+            val act = String.format("|  action: %-17s|", action)
+
+            tvBox.text = listOf(line, title, st, act, line).joinToString("\n")
+            btn.text = action
         }
-    }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        val titleText = view.findViewById<TextView>(R.id.titleText)
-        val bodyText = view.findViewById<TextView>(R.id.bodyText)
-        liveText = view.findViewById(R.id.liveText)
+        btn.setOnClickListener {
+            running = !running
+            render()
+        }
 
-        titleText.text = "Browser Relay"
-        bodyText.text = """
-            +-----------------------------+
-            | o4eret :: BROWSER           |
-            |                             |
-            | Status: READY               |
-            | Ticket protocol             |
-            | PACK v1                     |
-            | ASCII output                |
-            +-----------------------------+
-        """.trimIndent()
-    }
-
-    override fun onResume() {
-        super.onResume()
-        seconds = 0
-        liveText?.text = "LIVE: Browser t=${seconds}s"
-        handler.post(liveRunnable)
-    }
-
-    override fun onPause() {
-        super.onPause()
-        handler.removeCallbacks(liveRunnable)
+        render()
+        return v
     }
 }
