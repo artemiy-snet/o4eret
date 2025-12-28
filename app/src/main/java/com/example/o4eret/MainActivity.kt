@@ -1,38 +1,40 @@
 package com.example.o4eret
 
 import android.os.Bundle
-import android.util.Log
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import android.widget.TextView
-import com.google.android.material.button.MaterialButton
+import androidx.fragment.app.Fragment
+import com.example.o4eret.databinding.ActivityMainBinding
+import com.google.android.material.navigation.NavigationBarView
 
 class MainActivity : AppCompatActivity() {
+
+    private lateinit var b: ActivityMainBinding
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        b = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(b.root)
 
-        val statusText = findViewById<TextView>(R.id.node_status_text)
-        val startButton = findViewById<MaterialButton>(R.id.start_node_button)
-        val stopButton = findViewById<MaterialButton>(R.id.stop_node_button)
+        b.bottomNav.setOnItemSelectedListener(navListener)
 
-        startButton.setOnClickListener {
-            Toast.makeText(this, "Starting node...", Toast.LENGTH_SHORT).show()
-            Log.d("MainActivity", "Start node tapped")
-
-            statusText.text = "Node: RUNNING"
-            startButton.isEnabled = false
-            startButton.text = "Node running"
-            stopButton.isEnabled = true
+        // дефолтна вкладка
+        if (savedInstanceState == null) {
+            b.bottomNav.selectedItemId = R.id.nav_browser
         }
+    }
 
-        stopButton.setOnClickListener {
-            Log.d("MainActivity", "Stop node tapped")
-
-            statusText.text = "Node: STOPPED"
-            startButton.isEnabled = true
-            startButton.text = "Start node"
-            stopButton.isEnabled = false
+    private val navListener = NavigationBarView.OnItemSelectedListener { item ->
+        val f: Fragment = when (item.itemId) {
+            R.id.nav_network -> NetworkFragment()
+            R.id.nav_browser -> BrowserFragment()
+            R.id.nav_acoustic -> AcousticFragment()
+            R.id.nav_chat -> ChatFragment()
+            R.id.nav_info -> InfoFragment()
+            else -> BrowserFragment()
         }
+        supportFragmentManager.beginTransaction()
+            .replace(R.id.fragment_container, f)
+            .commit()
+        true
     }
 }
