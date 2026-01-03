@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center_horizontal"
+    android:orientation="vertical"
+    android:padding="24dp">
+
+    <TextView
+        android:id="@+id/terminalTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="monospace"
+        android:includeFontPadding="false"
+        android:textColor="@color/o4_green_bright"
+        android:textSize="22sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/terminalPanel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:fontFamily="monospace"
+        android:includeFontPadding="false"
+        android:lineSpacingExtra="2dp"
+        android:textColor="@color/o4_green_bright"
+        android:textSize="14sp" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/terminalButton"
+        style="@style/Widget.MaterialComponents.Button"
+        android:layout_width="220dp"
+        android:layout_height="48dp"
+        android:layout_marginTop="18dp"
+        android:backgroundTint="@color/o4_green"
+        android:stateListAnimator="@null"
+        android:textAllCaps="true"
+        android:textColor="@color/o4_bg"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/terminalStatus"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:fontFamily="monospace"
+        android:includeFontPadding="false"
+        android:textColor="@color/o4_green_bright"
+        android:textSize="12sp" />
+
+</LinearLayout>
